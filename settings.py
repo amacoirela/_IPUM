@@ -6,6 +6,7 @@ from pydantic import ValidationError, field_validator
 class Settings(BaseSettings):
     ENVIRONMENT: str
     APP_NAME: str
+    SECRET_KEY: str
 
     @field_validator("ENVIRONMENT", mode="before")
     def validate_environment(cls, value):
