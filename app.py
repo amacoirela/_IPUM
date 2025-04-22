@@ -19,3 +19,4 @@ def health_check():
 def predict_endpoint(request: PredictRequest):
     prediction = predict(model, [request.sepal_length, request.sepal_width, request.petal_length, request.petal_width])
     return PredictResponse(prediction=prediction)
+
