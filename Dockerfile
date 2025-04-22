@@ -8,12 +8,12 @@ WORKDIR /app
 
 # Install required system dependencies
 RUN apt-get update && apt-get install -y \
-    curl libsnappy-dev make gcc g++ libc6-dev libffi-dev \
+    curl libsnappy-dev make gcc g++ libc6-dev libffi-dev libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv package manager
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh  \
-    && \ln -s /root/.local/bin/uv /usr/local/bin/uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
+    && ln -s /root/.local/bin/uv /usr/local/bin/uv
 
 # Copy only dependency files first (to leverage caching)
 COPY pyproject.toml uv.lock ./
@@ -22,10 +22,10 @@ COPY pyproject.toml uv.lock ./
 RUN uv --version
 
 # Install project dependencies using uv
-RUN uv pip install --system --verbose
+RUN uv pip sync --system uv.lock
 
 # Copy the rest of the application code
-#COPY .
+COPY . .
 
 # Expose the application port
 EXPOSE 8000
